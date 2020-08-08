@@ -4,8 +4,9 @@ import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.validation.Validator;
+
 import javax.validation.Validation;
+import javax.validation.Validator;
 
 @Configuration
 public class ApplicationBeanConfiguration {
@@ -22,7 +23,7 @@ public class ApplicationBeanConfiguration {
 
     @Bean
     public Validator validator() {
-        return (Validator) Validation.buildDefaultValidatorFactory().getValidator();
+        return Validation.buildDefaultValidatorFactory().getValidator();
     }
 
 }
