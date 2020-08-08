@@ -1,5 +1,6 @@
 package bg.eshop.service.impl;
 
+import bg.eshop.domain.entities.User;
 import bg.eshop.domain.models.service.UserServiceModel;
 import bg.eshop.repository.UserRepository;
 import bg.eshop.service.RoleService;
@@ -11,7 +12,9 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -31,12 +34,27 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserServiceModel registerUser(UserServiceModel userServiceModel) {
-        return null;
+        this.roleService.addRolesInDB();
+
+        if (this.userRepository.count() == 0) {
+            userServiceModel.setAuthorities(this.roleService.findAllRoles());
+        } else {
+            userServiceModel.setAuthorities(new LinkedHashSet<>());
+
+            userServiceModel.getAuthorities().add(this.roleService.findByAuthority("ROLE_USER"));
+        }
+
+        User user = this.modelMapper.map(userServiceModel, User.class);
+        user.setPassword(this.bCryptPasswordEncoder.encode(userServiceModel.getPassword()));
+
+        return this.modelMapper.map(this.userRepository.saveAndFlush(user), UserServiceModel.class);
     }
 
     @Override
     public UserServiceModel getUserByUsername(String username) {
-        return null;
+        return this.userRepository.findByUsername(username)
+                .map(user -> this.modelMapper.map(user, UserServiceModel.class))
+                .orElseThrow(() -> new UsernameNotFoundException("Username not found"));
     }
 
     @Override
@@ -46,16 +64,37 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<UserServiceModel> getAllUsers() {
-        return null;
+        return this.userRepository
+                .findAll()
+                .stream()
+                .map(user -> this.modelMapper.map(user, UserServiceModel.class))
+                .collect(Collectors.toList());
     }
 
     @Override
-    public void setUserRole(String id, String role) {
+    public void addUserRole(String id, String role) {
+        User user = this.userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Wrong id!"));
 
+        UserServiceModel userServiceModel = this.modelMapper.map(user, UserServiceModel.class);
+        userServiceModel.getAuthorities().clear();
+
+        if (role.equals("user")) {
+            userServiceModel.getAuthorities().add(this.roleService.findByAuthority("ROLE_USER"));
+        } else if (role.equals("moderator")) {
+            userServiceModel.getAuthorities().add(this.roleService.findByAuthority("ROLE_USER"));
+            userServiceModel.getAuthorities().add(this.roleService.findByAuthority("ROLE_MODERATOR"));
+        } else {
+            userServiceModel.getAuthorities().add(this.roleService.findByAuthority("ROLE_USER"));
+            userServiceModel.getAuthorities().add(this.roleService.findByAuthority("ROLE_MODERATOR"));
+            userServiceModel.getAuthorities().add(this.roleService.findByAuthority("ROLE_ADMIN"));
+        }
+
+        this.userRepository.saveAndFlush(this.modelMapper.map(userServiceModel, User.class));
     }
 
     @Override
-    public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
-        return null;
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        return this.userRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("Username not Found"));
     }
 }
