@@ -34,7 +34,7 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public Set<RoleServiceModel> findAllRoles() {
+    public Set<RoleServiceModel> getAllRoles() {
         return this.roleRepository.findAll().
                 stream()
                 .map(r -> this.modelMapper.map(r, RoleServiceModel.class))
@@ -42,7 +42,7 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public RoleServiceModel findByAuthority(String authority) {
+    public RoleServiceModel getByAuthority(String authority) {
         return this.modelMapper.map(this.roleRepository.findByAuthority(authority), RoleServiceModel.class);
     }
 }

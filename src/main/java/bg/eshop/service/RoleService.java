@@ -8,7 +8,7 @@ public interface RoleService {
 
     void addRolesInDB();
 
-    Set<RoleServiceModel> findAllRoles();
+    Set<RoleServiceModel> getAllRoles();
 
-    RoleServiceModel findByAuthority(String authority);
+    RoleServiceModel getByAuthority(String authority);
 }

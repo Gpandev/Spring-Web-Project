@@ -27,7 +27,7 @@ public class AppWebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/users/login", "/users/register").anonymous()
                 .antMatchers("/").permitAll()
-                .antMatchers("/css/**","/img/**").permitAll()
+                .antMatchers("/css/**","/images/**", "/js/**","/fonts/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()

@@ -37,11 +37,11 @@ public class UserServiceImpl implements UserService {
         this.roleService.addRolesInDB();
 
         if (this.userRepository.count() == 0) {
-            userServiceModel.setAuthorities(this.roleService.findAllRoles());
+            userServiceModel.setAuthorities(this.roleService.getAllRoles());
         } else {
             userServiceModel.setAuthorities(new LinkedHashSet<>());
 
-            userServiceModel.getAuthorities().add(this.roleService.findByAuthority("ROLE_USER"));
+            userServiceModel.getAuthorities().add(this.roleService.getByAuthority("ROLE_USER"));
         }
 
         User user = this.modelMapper.map(userServiceModel, User.class);
@@ -79,14 +79,14 @@ public class UserServiceImpl implements UserService {
         userServiceModel.getAuthorities().clear();
 
         if (role.equals("user")) {
-            userServiceModel.getAuthorities().add(this.roleService.findByAuthority("ROLE_USER"));
+            userServiceModel.getAuthorities().add(this.roleService.getByAuthority("ROLE_USER"));
         } else if (role.equals("moderator")) {
-            userServiceModel.getAuthorities().add(this.roleService.findByAuthority("ROLE_USER"));
-            userServiceModel.getAuthorities().add(this.roleService.findByAuthority("ROLE_MODERATOR"));
+            userServiceModel.getAuthorities().add(this.roleService.getByAuthority("ROLE_USER"));
+            userServiceModel.getAuthorities().add(this.roleService.getByAuthority("ROLE_MODERATOR"));
         } else {
-            userServiceModel.getAuthorities().add(this.roleService.findByAuthority("ROLE_USER"));
-            userServiceModel.getAuthorities().add(this.roleService.findByAuthority("ROLE_MODERATOR"));
-            userServiceModel.getAuthorities().add(this.roleService.findByAuthority("ROLE_ADMIN"));
+            userServiceModel.getAuthorities().add(this.roleService.getByAuthority("ROLE_USER"));
+            userServiceModel.getAuthorities().add(this.roleService.getByAuthority("ROLE_MODERATOR"));
+            userServiceModel.getAuthorities().add(this.roleService.getByAuthority("ROLE_ADMIN"));
         }
 
         this.userRepository.saveAndFlush(this.modelMapper.map(userServiceModel, User.class));
