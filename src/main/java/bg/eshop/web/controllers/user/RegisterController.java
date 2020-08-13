@@ -3,7 +3,9 @@ package bg.eshop.web.controllers.user;
 import bg.eshop.domain.models.binding.UserRegisterBindingModel;
 import bg.eshop.domain.models.service.UserServiceModel;
 import bg.eshop.service.UserService;
+import bg.eshop.web.PageTitle;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,6 +25,7 @@ public class RegisterController {
     private final UserService userService;
     private final ModelMapper modelMapper;
 
+    @Autowired
     public RegisterController(UserService userService, ModelMapper modelMapper) {
         this.userService = userService;
         this.modelMapper = modelMapper;
@@ -30,6 +33,7 @@ public class RegisterController {
 
     @GetMapping("/register")
     @PreAuthorize("isAnonymous()")
+    @PageTitle("Register")
     public String register(@Valid @ModelAttribute("userRegisterBindingModel") UserRegisterBindingModel userRegisterBindingModel,
                            BindingResult bindingResult, Model model) {
 

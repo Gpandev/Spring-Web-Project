@@ -10,7 +10,7 @@ import javax.validation.Validator;
 
 
 @Configuration
-public class ApplicationBeanConfiguration {
+public class AppBeanConfiguration {
 
     @Bean
     public ModelMapper modelMapper() {
