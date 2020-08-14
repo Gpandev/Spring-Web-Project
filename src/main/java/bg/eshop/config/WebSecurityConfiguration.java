@@ -23,6 +23,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
+                .cors().disable()
                 .csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/users/login", "/users/register").anonymous()
@@ -37,8 +38,9 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .defaultSuccessUrl("/home",true)
                 .and()
                 .logout().permitAll()
-                .and().
-                exceptionHandling().accessDeniedPage("/unauthorized");
+                .and()
+                .exceptionHandling()
+                .accessDeniedPage("/unauthorized");
     }
 
     @Autowired

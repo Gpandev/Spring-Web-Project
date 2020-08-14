@@ -45,6 +45,7 @@ public class RegisterController {
     }
 
     @PostMapping("/register")
+    @PreAuthorize("isAnonymous()")
     public String confirmRegister(@Valid @ModelAttribute("userRegisterBindingModel") UserRegisterBindingModel userRegisterBindingModel,
                                   BindingResult bindingResult, RedirectAttributes redirectAttributes) {
 

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:replace="fragments/head"></th:block>
+</head>
+<body>
+<header>
+    <th:block th:replace="fragments/navbar"></th:block>
+</header>
+<main class="mt-3">
+    <div class="bg-image-bcg1">
+        <h1 class="nothing">All Users</h1>
+        <hr class="hr-2 bg-white w-75">
+        <table class="table table-hover w-75 mx-auto">
+            <thead>
+            <tr class="row mx-auto">
+                <th class="col-md-2 text-center nothing " style="font-size: 25px">#</th>
+                <th class="col-md-3 text-center nothing " style="font-size: 25px">Username</th>
+                <th class="col-md-2 text-center nothing " style="font-size: 25px">Email</th>
+                <th class="col-md-2 text-center nothing " style="font-size: 25px">Roles</th>
+                <th class="col-md-3 text-center nothing " style="font-size: 25px">Actions</th>
+            </tr>25
+            </thead>
+            <tbody>
+            <th:block th:each="user, iter : ${users}">
+                <tr class="row mx-auto">
+                    <th class="col-md-2 text-center nothing " style="font-size: 40px" th:text="${iter.index + 1}"></th>
+                    <td class="col-md-3 text-center textForm" th:text="${user.username}"></td>
+                    <td class="col-md-2 text-center textForm" th:text="${user.email}"></td>
+                    <td class="col-md-2 text-center textForm"
+                        th:text="${#strings.replace(#strings.listJoin(user.authorities, ', '), 'ROLE_', '')}"></td>
+                    <td class="col-md-3 text-center">
+
+                        <div class="row d-flex justify-content-center">
+                            <th:block th:if="${#lists.contains(user.authorities, 'ROLE_USER') &&
+                            !#lists.contains(user.authorities, 'ROLE_MODERATOR') && !#lists.contains(user.authorities, 'ROLE_ADMIN')
+                        }">
+                                <form th:action="@{/users/set-moderator/{id}(id=${user.id})}" method="post">
+                                    <button class="btn btn-dark btn-width " style="font-size: 30px">MODERATOR</button>
+                                </form>
+                                <form th:action="@{/users/set-admin/{id}(id=${user.id})}" method="post">
+                                    <button class="btn btn-dark btn-width " style="font-size: 30px">ADMIN</button>
+                                </form>
+                            </th:block>
+                            <th:block th:if="${#lists.contains(user.authorities, 'ROLE_USER') &&
+                            #lists.contains(user.authorities, 'ROLE_MODERATOR') && !#lists.contains(user.authorities, 'ROLE_ADMIN')
+                        }">
+                                <form th:action="@{/users/set-user/{id}(id=${user.id})}" method="post">
+                                    <button class="btn btn-dark btn-width " style="font-size: 30px">USER</button>
+                                </form>
+                                <form th:action="@{/users/set-admin/{id}(id=${user.id})}" method="post">
+                                    <button class="btn btn-dark btn-width " style="font-size: 30px">ADMIN</button>
+                                </form>
+                            </th:block>
+                            <th:block th:if="${#lists.contains(user.authorities, 'ROLE_USER') &&
+                            #lists.contains(user.authorities, 'ROLE_MODERATOR') && #lists.contains(user.authorities, 'ROLE_ADMIN') && !#lists.contains(user.authorities, 'ROLE_ROOT')
+                        }">
+                                <form th:action="@{/users/set-user/{id}(id=${user.id})}" method="post">
+                                    <button class="btn btn-dark btn-width " style="font-size: 30px">USER</button>
+                                </form>
+                                <form th:action="@{/users/set-moderator/{id}(id=${user.id})}" method="post">
+                                    <button class="btn btn-dark btn-width " style="font-size: 30px">MODERATOR</button>
+                                </form>
+                            </th:block>
+
+                        </div>
+                    </td>
+                </tr>
+            </th:block>
+            </tbody>
+        </table>
+        <hr class="hr-2 bg-white w-75">
+    </div>
+</main>
+<footer>
+    <th:block th:replace="fragments/footer"></th:block>
+</footer>
+
+<th:block th:replace="fragments/scripts"></th:block>
+</body>
+</html>

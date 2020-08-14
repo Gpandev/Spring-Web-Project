@@ -1,11 +1,14 @@
 package bg.eshop.domain.models.view;
 
+import java.util.Set;
+
 public class UsersAllViewModel {
 
     private String id;
     private String username;
     private String password;
     private String email;
+    private Set<String> authorities;
 
     public UsersAllViewModel() {
     }
@@ -40,5 +43,13 @@ public class UsersAllViewModel {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public Set<String> getAuthorities() {
+        return authorities;
+    }
+
+    public void setAuthorities(Set<String> authorities) {
+        this.authorities = authorities;
     }
 }
