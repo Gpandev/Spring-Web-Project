@@ -10,21 +10,19 @@ import java.util.HashMap;
 @Configuration
 public class CloudConfiguration {
 
-    @Value("dbvfrgvj9")
-    private String cloudName;
-
-    @Value("244737738683887")
-    private String cloudKey;
-
-    @Value("uuN8jJSBEiq2teNMtJQwc1mlDGg")
-    private String cloudSecret;
+    @Value("${cloudinary.cloud-name}")
+    private String cloudApiName;
+    @Value("${cloudinary.api-key}")
+    private String cloudApiKey;
+    @Value("${cloudinary.api-secret}")
+    private String cloudApiSecret;
 
     @Bean
     public Cloudinary cloudinary() {
         return new Cloudinary(new HashMap<String, Object>(){{
-            put("cloud_name", cloudName);
-            put("api_key", cloudKey);
-            put("api_secret", cloudSecret);
+            put("cloud_name", cloudApiName);
+            put("api_key", cloudApiKey);
+            put("api_secret", cloudApiSecret);
         }});
     }
 }

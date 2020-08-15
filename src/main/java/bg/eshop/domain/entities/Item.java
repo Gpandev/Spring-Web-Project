@@ -10,7 +10,7 @@ public class Item extends BaseEntity{
     private String itemName;
     private String description;
     private BigDecimal price;
-    private String imgUrl;
+    private String imageUrl;
     private Category categories;
 
     public Item() {
@@ -44,12 +44,12 @@ public class Item extends BaseEntity{
     }
 
     @Column(name = "image_url")
-    public String getImgUrl() {
-        return imgUrl;
+    public String getImageUrl() {
+        return imageUrl;
     }
 
-    public void setImgUrl(String imgUrl) {
-        this.imgUrl = imgUrl;
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
     @ManyToOne(targetEntity = Category.class)

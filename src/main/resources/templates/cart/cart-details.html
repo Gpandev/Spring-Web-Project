@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns:th='http://www.thymeleaf.org'
+      xmlns:sec='http://www.thymeleaf.org/extras/spring-security'>
+<head>
+    <th:block th:replace="fragments/head"></th:block>
+</head>
+<body>
+<header>
+    <th:block th:replace="fragments/navbar"></th:block>
+</header>
+
+<div class="page-top-info">
+    <div class="container">
+        <h4>Your cart</h4>
+        <div class="site-pagination">
+            <a href="">Home</a> /
+            <a href="">Your cart</a>
+        </div>
+    </div>
+</div>
+<!-- Page info end -->
+
+<main class="mt-3 profile-page">
+    <div class="bg-image-cart">
+        <h1 class="text-center nothing">Shopping Cart</h1>
+        <hr class="hr-2 bg-white w-75">
+        <table class="table table-hover w-75 mx-auto">
+            <thead>
+            <tr class="row mx-auto">
+                <th class="col-md-2 text-center nothing " style="font-size: 30px">Image</th>
+                <th class="col-md-3 text-center nothing " style="font-size: 30px">Name</th>
+                <th class="col-md-2 text-center nothing " style="font-size: 30px">Description</th>
+                <th class="col-md-2 text-center nothing " style="font-size: 30px">Price</th>
+                <th class="col-md-1 text-center nothing " style="font-size: 30px">Quantity</th>
+                <th class="col-md-2 text-center nothing " style="font-size: 30px">Remove</th>
+            </tr>
+            </thead>
+            <tbody>
+            <th:block th:each="item : ${#session.getAttribute('shopping-cart')}" th:object="${item}">
+                <tr class="row mx-auto">
+                    <th class="col-md-2 text-center"><img th:src="*{item.item.imageUrl}" alt="Product"
+                                                          height="150" width="150"></th>
+                    <td class="col-md-3 text-center textForm" th:text="*{item.item.name}"></td>
+                    <td class="col-md-2 text-center textForm" th:text="*{item.item.description}"></td>
+                    <td class="col-md-2 text-center textForm" th:text="*{item.item.price}"></td>
+                    <td class="col-md-1 text-center textForm" th:text="*{quantity}"></td>
+                    <td class="col-md-2 text-center">
+                        <form th:action="@{/cart/remove-product}" th:method="delete">
+                            <div class="button-holder d-flex justify-content-center">
+                                <input type="hidden" name="id" th:value="*{item.item.id}">
+                                <button type="submit" class="btn btn-danger" style="font-size: 20px">Remove</button>
+                            </div>
+                        </form>
+                    </td>
+                </tr>
+            </th:block>
+            </tbody>
+        </table>
+        <hr class="hr-2 bg-white w-75">
+        <div class="text-center textForm">
+            <h3 th:text="|Total: ${totalPrice}|"></h3>
+        </div>
+        <form th:action="@{/cart/checkout}" th:method="post">
+            <div class="button-holder d-flex justify-content-center">
+                <button type="submit" class="btn btn-success"  style="font-size:30px">Checkout</button>
+            </div>
+        </form>
+    </div>
+</main>
+
+<footer>
+    <th:block th:replace="fragments/footer"></th:block>
+</footer>
+</body>
+</html>

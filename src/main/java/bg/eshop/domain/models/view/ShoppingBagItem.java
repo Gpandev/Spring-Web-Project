@@ -6,17 +6,17 @@ import java.io.Serializable;
 
 public class ShoppingBagItem implements Serializable {
 
-    private OrderItemServiceModel item;
+    private OrderItemViewModel item;
     private int quantity;
 
     public ShoppingBagItem() {
     }
 
-    public OrderItemServiceModel getItem() {
+    public OrderItemViewModel getItem() {
         return item;
     }
 
-    public void setItem(OrderItemServiceModel item) {
+    public void setItem(OrderItemViewModel item) {
         this.item = item;
     }
 

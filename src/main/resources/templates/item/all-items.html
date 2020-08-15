@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th='http://www.thymeleaf.org'
+      xmlns:sec='http://www.thymeleaf.org/extras/spring-security'>
+<head>
+    <th:block th:replace="fragments/head"></th:block>
+</head>
+<body>
+<header>
+    <th:block th:replace="fragments/navbar"></th:block>
+</header>
+
+<!-- Product filter section -->
+<section class="product-filter-section">
+    <div class="container">
+        <div class="section-title">
+            <h2> TOP SELLING PRODUCTS</h2>
+        </div>
+            <div class="row">
+                <th:block th:each="item, iter : ${items}">
+                <div class="col-lg-3 col-sm-6">
+                    <div class="product-item">
+                        <div class="pi-pic">
+                            <img th:src="${item.imageUrl}" alt="">
+                            <div class="pi-links">
+                                <form th:href="@{/cart/add-product}" th:method="post">
+
+                                 <input type="submit"  class="add-card"><i class="flaticon-bag"></i><span>ADD TO CART</span></input>
+                                </form>
+                                <a th:href="@{/items/details/{id}(id=${item.id})}" class="add-card"><i class="flaticon-stats"></i><span>Details</span></a>
+                                <a href="#" class="wishlist-btn"><i class="flaticon-heart"></i></a>
+                            </div>
+                        </div>
+                        <div class="pi-text">
+                            <h6 th:text="${item.price}"></h6>
+                            <p th:text="${item.name}"></p>
+                            <th:block sec:authorize="hasRole('ROLE_MODERATOR')">
+                                <a th:href="@{/items/edit/{id}(id=${item.id})}" class="add-card"><i class="flaticon-edit"></i><span>Edit</span></a>
+                                <a th:href="@{/items/delete/{id}(id=${item.id})}" class="wishlist-btn"><i class="flaticon-delete"></i><span>Delete</span></a>
+                            </th:block>
+                        </div>
+                    </div>
+                </div>
+            </th:block>
+            </div>
+    </div>
+</section>
